@@ -1,22 +1,39 @@
 import socket
 import threading
 
+#5011
+
+FORMAT = 'utf-8'
 HEADER = 64
-PORT = 5011
+PORT = 5060
 SERVER = socket.gethostbyname(socket.gethostname())
 ADDR = (SERVER, PORT)
 DIS_MESSAGE = "DiScOnNeCtEd!"
 
-print(socket.gethostname())
+# print(socket.gethostname())
+print(SERVER)
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
 
+server.settimeout(10)
+
 def handle_client(conn, addr):
+
     print(f"address: {addr} connected.")
-    isConnected = True
-    while isConnected:
-        msg_length = conn.recv()
+    is_connected=True
+
+    while is_connected:
+        # print(f"{conn.recv(HEADER).decode(FORMAT)}")
+        # msg_length, msg = conn.recv(HEADER).decode(FORMAT)
+        # msg = conn.recv(HEADER).decode(FORMAT)
+        # print(f"{msg_length} --- {msg}")
+        # if msg_length:
+        #     msg_length = int(msg_length)
+        #     if msg == DIS_MESSAGE:
+        #         isConnected = False
+        conn.send("Msg received".encode(FORMAT))
+    conn.close()
 
 def start():
     server.listen()
